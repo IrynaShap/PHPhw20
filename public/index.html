@@ -1,0 +1,46 @@
+<html lang="en">
+<body>
+<label for="requestType">Request Type:</label>
+<select id="requestType" name="requestType" autocomplete="off">
+    <option value="GET" selected>GET</option>
+    <option value="POST">POST</option>
+</select>
+<form id="form" action="endpoint.php" method="get">
+    <div id="numericFields" style="display: none;">
+        <label for="num1">Num1:</label>
+        <input type="number" id="num1" name="num1" disabled>
+        <label for="num2">Num2:</label>
+        <input type="number" id="num2" name="num2" disabled>
+    </div>
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const requestTypeElement = document.getElementById('requestType');
+        const numericFieldsElement = document.getElementById('numericFields');
+        const formElement = document.getElementById('form');
+        const ids = ['num1', 'num2'];
+
+        const getElementById = id => document.getElementById(id);
+        const toggleElementProperties = (id, isRequired, isDisabled) => {
+            let element = getElementById(id);
+            element.required = isRequired;
+            element.disabled = isDisabled;
+        };
+
+        const updateFormBasedOnRequestType = () => {
+            const isPost = requestTypeElement.value === 'POST';
+            numericFieldsElement.style.display = isPost ? 'block' : 'none';
+            formElement.method = isPost ? 'post' : 'get';
+            ids.forEach(id => toggleElementProperties(id, isPost, !isPost));
+        };
+
+        updateFormBasedOnRequestType();
+
+        requestTypeElement.addEventListener('change', updateFormBasedOnRequestType);
+    });
+</script>
+
+</body>
+</html>
